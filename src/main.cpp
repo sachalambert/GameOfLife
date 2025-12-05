@@ -68,12 +68,12 @@ void scrollCallback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] double
 }
 
 void cursorPosCallback([[maybe_unused]] GLFWwindow* window, double xPos, double yPos) {
-	static double xPosPrev = 0.0f;
-	static double yPosPrev = 0.0f;
+	static float xPosPrev = 0.0f;
+	static float yPosPrev = 0.0f;
 
 	if (dragging) {
-		posX -= (xPos - xPosPrev) / windowWidth * zoom;
-		posY += (yPos - yPosPrev) / windowHeight * zoom;
+		posX -= ((float)xPos - xPosPrev) / windowWidth * zoom;
+		posY += ((float)yPos - yPosPrev) / windowHeight * zoom;
 	}
 
 	xPosPrev = xPos;
