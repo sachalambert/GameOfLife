@@ -1,0 +1,76 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <fstream>
+#include <ios>
+#include <iostream>
+
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_A) {
+		glfwSetWindowShouldClose(window, 1);
+	}
+}
+
+int main(void) {
+	glfwInit();
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+	GLFWwindow* window = glfwCreateWindow(500, 500, "TEST", NULL, NULL);
+	if (!window) {
+		std::cout << "Failed to create GLFW window.\n";
+		glfwTerminate();
+		return 1;
+	}
+	glfwMakeContextCurrent(window);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		std::cout << "Failed to initialize GLAD.\n";
+		return 1;
+	};
+
+	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+	glfwSetKeyCallback(window, keyCallback);
+
+	float vertices[] = {
+		-1.0f, -1.0f, // Bottom left
+		-1.0f,  1.0f, // Top left
+		 1.0f, -1.0f,	// Bottom right
+		 1.0f,  1.0f  // Top right
+	};
+
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	std::fstream vertexShaderStream("~/Perso/GOL/srs/shaders/shader.vert", std::ios::ate);
+	if (!vertexShaderStream.is_open()) {
+		cout << "oups\n";
+	}
+
+	std::ios::pos_type size = vertexShaderStream.tellg();
+	std::cout << "taille " << size << "\n";
+
+	char* buffer = (char*)std::malloc(sizeof(char)*size);
+	vertexShaderStream.read(buffer, size);
+
+	std::cout << "Buffer : \n";
+	std::cout << buffer;
+	std::cout << "\n";
+
+	while (!glfwWindowShouldClose(window)) {
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	glfwTerminate();
+	return 0;
+}

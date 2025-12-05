@@ -1,0 +1,1 @@
+in vec2 texCoords;uniform float uPosX;uniform float uPosY;uniform float uZoom;uniform sampler2D uTexture;out vec4 fragColor;void main(){vec2 coords=vec2(texCoords.x+uPosX,texCoords.y+uPosY)*uZoom;fragColor=texture(uTexture,coords);}
