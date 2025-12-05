@@ -1,29 +1,51 @@
 name: SonarQube
+
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
     env:
-      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+      # Directory where build-wrapper output will be placed (used only if you decide to enable Build Wrapper later)
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Can be removed if not using the Build Wrapper
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-#      - name: Install Build Wrapper
-#        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v6
-#      - name: Run Build Wrapper
-#        run: |
-#          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} sh cmaker.sh
+          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+
+      # Optional: Install GLFW and other dependencies to make sure the project has everything it needs
+      - name: Install GLFW and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglfw3 libglfw3-dev
+
+      # Optional: If you want to perform a minimal build or just set up the environment, you could run a simple configure step here
+      # For now, we will skip the actual build.
+
+      # Skip Build Wrapper and Direct Compilation if not needed
+      # If you later want to use the Build Wrapper, you can uncomment the following lines
+      #
+      # - name: Install Build Wrapper
+      #   uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v6
+      # - name: Run Build Wrapper
+      #   run: |
+      #     build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} sh cmake.sh
+
+      # Run the SonarQube analysis without compiling
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
+            --define "sonar.sources=src"  # Adjust this path to your source folder
+            --define "sonar.exclusions=**/external/**"  # Exclude external dependencies like GLFW if you wish
+            --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"  # Only if using Build Wrapper
+            --define "sonar.host.url=https://sonarcloud.io"  # Point to SonarCloud if applicable
