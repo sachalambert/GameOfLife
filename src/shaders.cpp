@@ -9,7 +9,7 @@ const char* computeFragmentShaderSource = COMPUTE_FRAGMENT_SHADER_SOURCE;
 const char* renderVertexShaderSource    = RENDER_VERTEX_SHADER_SOURCE;
 const char* renderFragmentShaderSource  = RENDER_FRAGMENT_SHADER_SOURCE;
 
-const GLuint Shaders::linkShaderProgram(const char* vertexSource, const char* fragmentSource) {
+GLuint Shaders::linkShaderProgram(const char* vertexSource, const char* fragmentSource) const {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, nullptr);
 	glCompileShader(vertexShader);
@@ -35,7 +35,7 @@ Shaders::Shaders(GLuint width, GLuint height) {
 	// Replace %f in COMPUTE_VERTEX_SHADER_SOURCE with a float
 	// Will look like 0.123456 (6 decimal places)
 	// 8 characters - 2 characters (%f) = 6 characters
-	char* computeFragmentShaderSourceForReal = (char*)malloc(sizeof(COMPUTE_FRAGMENT_SHADER_SOURCE) + 6);
+	auto* computeFragmentShaderSourceForReal = (char*)malloc(sizeof(COMPUTE_FRAGMENT_SHADER_SOURCE) + 6);
 	sprintf(
 		computeFragmentShaderSourceForReal,
 		computeFragmentShaderSource,

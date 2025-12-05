@@ -146,7 +146,7 @@ int main(int argc, char* argv[]) {
 
 	glBindVertexArray(vao);
 
-	Shaders shaders = Shaders(width, height);
+	auto shaders = Shaders(width, height);
 
 	GLuint texture1, texture2;
 	glGenTextures(1, &texture1);
