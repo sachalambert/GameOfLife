@@ -162,7 +162,11 @@ int main(int argc, char* argv[]) {
 	GLubyte* data = (GLubyte*)malloc(sizeof(GLubyte) * width*height*3);
 
 	for (GLsizei i = 0; i < width*height; i++) {
-		int v = (rand() < (RAND_MAX/2)) * 255;
+		GLubyte v = 0;
+		if (rand() < (RAND_MAX/2)) {
+			v = 255;
+		}
+
 		data[3*i + 0] = v;
 		data[3*i + 1] = v;
 		data[3*i + 2] = v;
