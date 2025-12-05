@@ -5,8 +5,10 @@
 
 #include <iostream>
 
-int windowWidth, windowHeight; // TODO
-float posX = 0.0f, posY = 0.0f;
+int windowWidth;
+int windowHeight; // TODO
+float posX = 0.0f;
+float posY = 0.0f;
 float zoom = 1.0f;
 
 void framebufferSizeCallback([[maybe_unused]] GLFWwindow* window, int width, int height) {
@@ -132,12 +134,12 @@ int main(int argc, char* argv[]) {
 		-1.0f,  1.0f  // Top left
 	};
 
-	GLuint vao, vbo;
+	GLuint vao;
 	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
 	glBindVertexArray(vao);
 
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
