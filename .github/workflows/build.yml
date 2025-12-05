@@ -45,7 +45,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            --define "sonar.sources=src"  # Adjust this path to your source folder
-            --define "sonar.exclusions=**/external/**"  # Exclude external dependencies like GLFW if you wish
-            --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"  # Only if using Build Wrapper
-            --define "sonar.host.url=https://sonarcloud.io"  # Point to SonarCloud if applicable
+            --define "sonar.sources=src"
