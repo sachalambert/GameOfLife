@@ -1,0 +1,3 @@
+/home/sacha/Perso/GameOfLife/build/CMakeFiles/main.dir
+/home/sacha/Perso/GameOfLife/build/CMakeFiles/edit_cache.dir
+/home/sacha/Perso/GameOfLife/build/CMakeFiles/rebuild_cache.dir
