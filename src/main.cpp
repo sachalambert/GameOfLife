@@ -9,14 +9,14 @@ int windowWidth, windowHeight; // TODO
 float posX = 0.0f, posY = 0.0f;
 float zoom = 1.0f;
 
-void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+void framebufferSizeCallback([[maybe_unused]] GLFWwindow* window, int width, int height) {
 	windowWidth = width;
 	windowHeight = height;
 	glViewport(0, 0, width, height);
 }
 
 bool controlKeyPressed = false;
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void keyCallback(GLFWwindow* window, int key, [[maybe_unused]] int scancode, int action, [[maybe_unused]] int mods) {
 	if (key == GLFW_KEY_A) {
 		glfwSetWindowShouldClose(window, 1);
 	}
@@ -47,25 +47,27 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		case GLFW_KEY_DOWN:
 			posY -= 1.0f;
 			break;
+		default:
+			break;
 	}
 }
 
 bool dragging = false;
-void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+void mouseButtonCallback([[maybe_unused]] GLFWwindow* window, int button, int action, [[maybe_unused]] int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
 		dragging = action == GLFW_PRESS;
 	}
 }
 
-void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+void scrollCallback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] double xOffset, double yOffset) {
 	if (yOffset < 0) {
-		zoom *= 1.1;
+		zoom *= 1.1f;
 	} else if (yOffset > 0) {
-		zoom /= 1.1;
+		zoom /= 1.1f;
 	}
 }
 
-void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
+void cursorPosCallback([[maybe_unused]] GLFWwindow* window, double xPos, double yPos) {
 	static double xPosPrev = 0.0f;
 	static double yPosPrev = 0.0f;
 
@@ -101,7 +103,7 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow* window = glfwCreateWindow(500, 500, "TEST", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(500, 500, "TEST", nullptr, nullptr);
 	if (!window) {
 		std::cout << "Failed to create GLFW window.\n";
 		glfwTerminate();
@@ -112,7 +114,7 @@ int main(int argc, char* argv[]) {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD.\n";
 		return 1;
-	};
+	}
 
 	framebufferSizeCallback(window, 500, 500);
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -176,7 +178,7 @@ int main(int argc, char* argv[]) {
 	/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);*/
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
 	// Generate framebuffer
 	GLuint fbo;
