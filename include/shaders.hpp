@@ -5,7 +5,7 @@
 
 class Shaders {
 	private:
-		const GLuint linkShaderProgram(const char* vertexSource, const char* fragmentSource);
+		GLuint linkShaderProgram(const char* vertexSource, const char* fragmentSource);
 
 	public:
 		GLuint computeShaderProgram;
